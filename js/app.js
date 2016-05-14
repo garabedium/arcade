@@ -1,13 +1,17 @@
 // Enemies our player must avoid
-var Enemy = function(x,y) {
+var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
+
+    // X/Y location variables
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = x;
-    this.y = y;
+
 };
 
 // Update the enemy's position, required method for game
@@ -16,6 +20,11 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+    // Move  enemy
+    //this.x = this.x + (this.speed * dt);
+
+    //ctx.drawImage(Resources.get(this.sprite), this)
 };
 
 // Draw the enemy on the screen, required method for game
@@ -39,37 +48,57 @@ Player.prototype.render = function(){
 };
 
 Player.prototype.update = function(dt){
+
 };
 
 Player.prototype = Object.create(Enemy.prototype);
-Player.prototype.handleInput = function(){};
+
+Player.prototype.handleInput = function(key){
+
+    var moveValue = 40;
+
+    switch(key){
+        case 'up':
+            this.y -= moveValue;
+            break;
+        case 'down':
+            this.y += moveValue;
+            break;
+        case 'left':
+            this.x -= moveValue;
+            break;
+    }
+    // if (key === 'up'){
+    //     this.y -= 40;
+    // } else if (key === 'down'){
+    //     this.y += 40;
+    // } else if (key === 'left'){
+    //     this.x -= 40;
+    // } else if (key === 'right'){
+    //     this.x += 40;
+    // }
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-// Manually creating / pushing enemies
-    // var enemy1 = new Enemy(10,60); // console.log(enemy1.x) == 10
-    // var enemy2 = new Enemy(10, enemy1.y + 70);
-    // var enemy3 = new Enemy(10, enemy2.y + 70);
-    //var allEnemies = [];
-    //allEnemies.push(enemy1, enemy2, enemy3);
-
-// Creating enemies in loop
+// Create enemies loop
 var allEnemies = [];
 
-for (var i = 0; allEnemies.length <= 4; i++) {
+// rows: 60, 140, 220, 310
 
-    //allEnemies[i] = new Enemy(10, 20 + i);
-    var randomY = Math.random() * (310 - 55) + 55; // generate a random Y coord between 55 and 400
+for (var i = 0; allEnemies.length <= 3; i++) {
+
+    var randomY = Math.random() * (310 - 55) + 55; // generate a random Y coord between 55 and 310
         randomY = Math.round(randomY); // make sure it's a whole number
+    var randomSpeed = Math.random() * (260 - 30) + 30;
+        randomSpeed = Math.round(randomSpeed);
 
-    allEnemies.push( new Enemy(5, randomY) );
+    allEnemies.push( new Enemy(5, randomY, randomSpeed) );
 
 }
-    //function spawnEnemies() {}; spawnEnemies(); // enemy loop originally in a function, but couldnt get it called...
 
-//allEnemies.push(new Enemy(10, 310));
 var player = new Player(200,400);
 
 
@@ -85,11 +114,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-///// CREDITS
-/**
-- http://stackoverflow.com/questions/6645067/javascript-dynamically-creating-variables-for-loops
-- http://javascriptissexy.com/javascript-apply-call-and-bind-methods-are-essential-for-javascript-professionals/
-- http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
-**/
-/////////////

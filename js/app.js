@@ -41,6 +41,7 @@ var Player = function(x,y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
+    this.score = 0; // keep player score
 };
 
 Player.prototype.render = function(){
@@ -54,29 +55,33 @@ Player.prototype.update = function(dt){
 Player.prototype = Object.create(Enemy.prototype);
 
 Player.prototype.handleInput = function(key){
-
-    var moveValue = 40;
+    var playerMove = 40;
 
     switch(key){
         case 'up':
-            this.y -= moveValue;
+            this.y -= playerMove;
             break;
         case 'down':
-            this.y += moveValue;
+            this.y += playerMove;
             break;
         case 'left':
-            this.x -= moveValue;
+            this.x -= playerMove;
+            break;
+        case 'right':
+            this.x += playerMove;
             break;
     }
-    // if (key === 'up'){
-    //     this.y -= 40;
-    // } else if (key === 'down'){
-    //     this.y += 40;
-    // } else if (key === 'left'){
-    //     this.x -= 40;
-    // } else if (key === 'right'){
-    //     this.x += 40;
-    // }
+
+    // Player boundaries & score
+    if (this.y <= -40){
+        this.y = 400;
+        this.score += 10;
+        alert("Nice hoppin' chappie! Your score: " + this.score + "!");
+    } else if (this.x <= 0){
+        this.x = 0;
+    } else if (this.x >= 400){
+        this.x = 400;
+    }
 };
 
 // Now instantiate your objects.
@@ -100,7 +105,6 @@ for (var i = 0; allEnemies.length <= 3; i++) {
 }
 
 var player = new Player(200,400);
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

@@ -21,16 +21,32 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    // Move  enemy
-    //this.x = this.x + (this.speed * dt);
+    // Enemy movement loop
+    if (this.x > 500){ // If enemy is off-canvas, start over at -80
+        this.x = -80;
+        this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
+        this.speed = enemySpeed;
+    } else {
+       this.x = this.x += (this.speed * dt);
+    }
 
-    //ctx.drawImage(Resources.get(this.sprite), this)
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+function checkCollisions () {
+    allEnemies.forEach(function(enemy){
+        if (enemy.x < player.y + 50 &&
+            enemy.x + 50 > player.x
+            ){
+            player.x = 200;
+            player.y = 400;
+        }
+    });
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -42,6 +58,7 @@ var Player = function(x,y) {
     this.x = x;
     this.y = y;
     this.score = 0; // keep player score
+    this.scoreValue = 10;
 };
 
 Player.prototype.render = function(){
@@ -72,35 +89,42 @@ Player.prototype.handleInput = function(key){
             break;
     }
 
-    // Player boundaries & score
-    if (this.y <= -40){
+    // Set player boundaries & score
+    if (this.y < 40){
         this.y = 400;
-        this.score += 10;
+        this.score += this.scoreValue;
         alert("Nice hoppin' chappie! Your score: " + this.score + "!");
-    } else if (this.x <= 0){
+    } else if (this.y >= 400) {
+        this.y = 400;
+    }
+    if (this.x <= 0){
         this.x = 0;
     } else if (this.x >= 400){
         this.x = 400;
     }
+
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-// Create enemies loop
+// Enemy array
 var allEnemies = [];
+var enemyRows = [60,140,220,300];
 
-// rows: 60, 140, 220, 310
-
+// Create 4 enemies
 for (var i = 0; allEnemies.length <= 3; i++) {
 
-    var randomY = Math.random() * (310 - 55) + 55; // generate a random Y coord between 55 and 310
-        randomY = Math.round(randomY); // make sure it's a whole number
-    var randomSpeed = Math.random() * (260 - 30) + 30;
-        randomSpeed = Math.round(randomSpeed);
+    // Start enemy on a random Y whole coordinate betw: 55 - 310
+   var enemyY = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
 
-    allEnemies.push( new Enemy(5, randomY, randomSpeed) );
+    // Set a random speed for the enemy betw: 60 - 240
+    var enemySpeed = Math.random() * (240 - 60) + 60;
+        enemySpeed = Math.round(enemySpeed);
+
+    // Add new enemy to allEnemies array
+    allEnemies.push( new Enemy(-150, enemyY, enemySpeed) );
 
 }
 

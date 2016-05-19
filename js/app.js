@@ -25,7 +25,8 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 500){ // If enemy is off-canvas, start over at -80
         this.x = -80;
         this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
-        this.speed = enemySpeed;
+        //this.y = 220;
+        this.speed = Math.random() * (240 - 60) + 60;
     } else {
        this.x = this.x += (this.speed * dt);
     }
@@ -37,16 +38,16 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-function checkCollisions () {
-    allEnemies.forEach(function(enemy){
-        if (enemy.x < player.y + 50 &&
-            enemy.x + 50 > player.x
-            ){
-            player.x = 200;
-            player.y = 400;
-        }
-    });
-}
+// function checkCollisions () {
+//     allEnemies.forEach(function(enemy){
+//         if (enemy.x < player.y + 50 &&
+//             enemy.x + 50 > player.x
+//             ){
+//             player.x = 200;
+//             player.y = 400;
+//         }
+//     });
+// }
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -72,6 +73,7 @@ Player.prototype.update = function(dt){
 Player.prototype = Object.create(Enemy.prototype);
 
 Player.prototype.handleInput = function(key){
+
     var playerMove = 40;
 
     switch(key){
@@ -116,15 +118,17 @@ var enemyRows = [60,140,220,300];
 // Create 4 enemies
 for (var i = 0; allEnemies.length <= 3; i++) {
 
+    var enemyRowRandom = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
+
     // Start enemy on a random Y whole coordinate betw: 55 - 310
-   var enemyY = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
+   this.y = enemyRowRandom;
 
     // Set a random speed for the enemy betw: 60 - 240
     var enemySpeed = Math.random() * (240 - 60) + 60;
         enemySpeed = Math.round(enemySpeed);
 
     // Add new enemy to allEnemies array
-    allEnemies.push( new Enemy(-150, enemyY, enemySpeed) );
+    allEnemies.push( new Enemy(-150, this.y, enemySpeed) );
 
 }
 

@@ -6,3 +6,5 @@ FEND - Frogger clone
 - [Call-Bind Methods](http://javascriptissexy.com/javascript-apply-call-and-bind-methods-are-essential-for-javascript-professionals/)
 - [Generating Random Numbers](http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range)
 - [Enemy Movement](https://discussions.udacity.com/t/game-design-and-enemies-moving/35473/2)
+- [Collision Detection](https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection)
+- [Bug Font](http://www.dafont.com/a-bugs-life.font)

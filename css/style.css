@@ -2,9 +2,40 @@ body {
     text-align: center;
 }
 canvas {
-	margin-top: -50px; // offset water-block.png top to reduce likelihood of vertical scrollbar
-}
-div {
+	margin-top: -50px; /*offset water-block.png top to reduce likelihood of vertical scrollbar*/
 	float: left;
-	width: 40%;
 }
+@font-face {
+	font-family: 'bugsLife';
+	src: url('bugsLife.eot');
+	src: local('☺'), url('bugsLife.woff') format('woff'), url('bugsLife.ttf') format('truetype'), url('bugsLife.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+#score-board {
+	float: left;
+	width: 25%;
+}
+#score-board h1 {
+	font-family: 'bugsLife', sans-serif;
+	font-size: 36px;
+	letter-spacing: 1px;
+	line-height: 55px;
+	margin: 0;
+	font-weight: 400;
+}
+#score-board h1 span {
+	font-size: 50px;
+	color: #2eb82e;
+	display: block;
+}
+#score-board h3 {
+	font-family: Arial, Sans-serif;
+}
+#score-board h3 span {
+	color: #3399ff;
+	display: block;
+	font-size: 40px;
+}
+
+

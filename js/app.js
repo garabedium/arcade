@@ -1,15 +1,23 @@
+// Keep score
 var score = 0,
-    scoreBoard = 'div',
-    scoreValue = 10;
+    scoreValue = 10,
+    gameTitle = "<h1>a <span>bug's</span> strife</h1>",
+    scoreText = "<h3>score: <span id='score'></span></h3>";
+
+window.onload = function(){
+    document.getElementById("score-board").innerHTML=gameTitle + scoreText;
+    document.getElementById("score").innerHTML=score;
+}
 
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
-    // X/Y location variables
     this.x = x;
     this.y = y;
+    this.width = 95;
+    this.height = 75;
     this.speed = speed;
 
     // The image/sprite for our enemies, this uses
@@ -26,50 +34,20 @@ Enemy.prototype.update = function(dt) {
     // all computers.
 
     // Enemy movement loop
-    if (this.x > 500){ // If enemy is off-canvas, start over at -80
+    // If enemy is off-canvas, start over at -80
+    if (this.x > 500){
         this.x = -80;
         this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
-        //this.y = 220;
         this.speed = Math.random() * (240 - 60) + 60;
     } else {
        this.x = this.x += (this.speed * dt);
     }
-
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-// Reset game if player hits bug
-// Check if player x-position is before / after bug x-pos, and on same y-pos.
-function checkCollisions () {
-    allEnemies.forEach(function(enemy){
-        if (
-            // player.x <= enemy.x - 10 &&
-            // player.y <= enemy.y - 10
-            player.x + 10 <= enemy.x &&
-            player.y <= enemy.y + 20
-
-        ){
-            //console.log("Crash behind: " + player.x + " - " + player.y);
-            console.log("Crash front: " + player.x + " - " + player.y);
-            player.reset();
-            // player.x = 200;
-            // player.y = 400;
-
-        }
-        //  else if (
-        //     player.x >= enemy.x + 10 &&
-        //     player.y + 80 <= enemy.y
-        // ) {
-        //     console.log("Crash front: " + player.x + " - " + player.y);
-        //     player.x = 200;
-        //     player.y = 400;
-        // }
-    });
-}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -80,8 +58,11 @@ var Player = function(x,y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
-    // this.score = 0; // keep player score
-    // this.scoreValue = 10;
+
+    // Set player width-height for collision detection
+    this.width = 65;
+    this.height = 90;
+
 };
 
 Player.prototype.render = function(){
@@ -89,6 +70,18 @@ Player.prototype.render = function(){
 };
 
 Player.prototype.update = function(dt){
+
+    // Set player boundaries
+    if (this.y < 40){
+        player.reset(1);
+    } else if (this.y >= 400) {
+        this.y = 400;
+    }
+    if (this.x <= 0){
+        this.x = 0;
+    } else if (this.x >= 400){
+        this.x = 400;
+    }
 
 };
 
@@ -111,22 +104,23 @@ Player.prototype.handleInput = function(key){
             break;
     }
 
-    // Set player boundaries & score
-    if (this.y < 40){
-        player.reset();
-        //this.score += this.scoreValue;
-        score += scoreValue;
-        alert("Nice hoppin' chappie! Your score: " + score + "!");
-    } else if (this.y >= 400) {
-        this.y = 400;
-    }
-    if (this.x <= 0){
-        this.x = 0;
-    } else if (this.x >= 400){
-        this.x = 400;
-    }
-
 };
+
+// Reset game if player hits bug
+// Check if player x-position is before / after bug x-pos, and on same y-pos.
+function checkCollisions () {
+    allEnemies.forEach(function(enemy){
+
+        if (
+            player.x <= enemy.x + enemy.width - 20 &&
+            player.x + enemy.width >= enemy.x &&
+            player.y <= enemy.y + enemy.height - 10 &&
+            player.height + player.y >= enemy.y
+        ){
+            player.reset(0);
+        }
+    });
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -138,15 +132,15 @@ var allEnemies = [];
 // Confine enemy movement to these Y coordinates / rows
 var enemyRows = [60,140,220,300];
 
-// Create 4 enemies
+// Create enemies
 for (var i = 0; allEnemies.length <= 3; i++) {
 
     var enemyRowRandom = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
 
-    // Start enemy on a random Y whole coordinate betw: 55 - 310
-   this.y = enemyRowRandom;
+    // Start enemy on random enemyRows value
+    this.y = enemyRowRandom;
 
-    // Set a random speed for the enemy betw: 60 - 240
+    // Set a random speed for the enemy
     var enemySpeed = Math.random() * (240 - 60) + 60;
         enemySpeed = Math.round(enemySpeed);
 
@@ -158,12 +152,29 @@ for (var i = 0; allEnemies.length <= 3; i++) {
 var player = new Player(200,400);
 
 // Player reset function
-Player.prototype.reset = function(){
+Player.prototype.reset = function(status){
+
+    // Reset to starting coordinates
     player.x = 200;
     player.y = 400;
-}
 
-//scoreBoard.html("Test");
+    // If player reaches water, success, else, hit by bug
+    if (status === 1){
+        score += scoreValue;
+        document.getElementById("score").innerHTML=score;
+        alert("Nice hoppin' chappie! Your score: " + score + "!");
+    } else {
+        if (score > 0){
+            score -= scoreValue;
+            document.getElementById("score").innerHTML=score;
+            alert("Agh! Avoid the bugs! You lose " + scoreValue + " points." + "\n" +
+                  "Your score: " + score);
+        } else {
+             alert("Agh! Avoid the bugs! Your score: " + score);
+        }
+        console.log("Crash: " + player.x + " - " + player.y);
+    }
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

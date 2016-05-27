@@ -28,6 +28,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
+    scoreBoard.id = "score-board";
     doc.body.appendChild(scoreBoard);
     doc.body.appendChild(canvas);
 

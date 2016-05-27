@@ -1,3 +1,7 @@
+var score = 0,
+    scoreBoard = 'div',
+    scoreValue = 10;
+
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
@@ -38,16 +42,34 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// function checkCollisions () {
-//     allEnemies.forEach(function(enemy){
-//         if (enemy.x < player.y + 50 &&
-//             enemy.x + 50 > player.x
-//             ){
-//             player.x = 200;
-//             player.y = 400;
-//         }
-//     });
-// }
+// Reset game if player hits bug
+// Check if player x-position is before / after bug x-pos, and on same y-pos.
+function checkCollisions () {
+    allEnemies.forEach(function(enemy){
+        if (
+            // player.x <= enemy.x - 10 &&
+            // player.y <= enemy.y - 10
+            player.x + 10 <= enemy.x &&
+            player.y <= enemy.y + 20
+
+        ){
+            //console.log("Crash behind: " + player.x + " - " + player.y);
+            console.log("Crash front: " + player.x + " - " + player.y);
+            player.reset();
+            // player.x = 200;
+            // player.y = 400;
+
+        }
+        //  else if (
+        //     player.x >= enemy.x + 10 &&
+        //     player.y + 80 <= enemy.y
+        // ) {
+        //     console.log("Crash front: " + player.x + " - " + player.y);
+        //     player.x = 200;
+        //     player.y = 400;
+        // }
+    });
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -58,8 +80,8 @@ var Player = function(x,y) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
-    this.score = 0; // keep player score
-    this.scoreValue = 10;
+    // this.score = 0; // keep player score
+    // this.scoreValue = 10;
 };
 
 Player.prototype.render = function(){
@@ -69,8 +91,6 @@ Player.prototype.render = function(){
 Player.prototype.update = function(dt){
 
 };
-
-Player.prototype = Object.create(Enemy.prototype);
 
 Player.prototype.handleInput = function(key){
 
@@ -93,9 +113,10 @@ Player.prototype.handleInput = function(key){
 
     // Set player boundaries & score
     if (this.y < 40){
-        this.y = 400;
-        this.score += this.scoreValue;
-        alert("Nice hoppin' chappie! Your score: " + this.score + "!");
+        player.reset();
+        //this.score += this.scoreValue;
+        score += scoreValue;
+        alert("Nice hoppin' chappie! Your score: " + score + "!");
     } else if (this.y >= 400) {
         this.y = 400;
     }
@@ -113,6 +134,8 @@ Player.prototype.handleInput = function(key){
 
 // Enemy array
 var allEnemies = [];
+
+// Confine enemy movement to these Y coordinates / rows
 var enemyRows = [60,140,220,300];
 
 // Create 4 enemies
@@ -133,6 +156,14 @@ for (var i = 0; allEnemies.length <= 3; i++) {
 }
 
 var player = new Player(200,400);
+
+// Player reset function
+Player.prototype.reset = function(){
+    player.x = 200;
+    player.y = 400;
+}
+
+//scoreBoard.html("Test");
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

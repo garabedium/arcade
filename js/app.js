@@ -106,16 +106,17 @@ Player.prototype.handleInput = function(key){
 
 };
 
-// Reset game if player hits bug
-// Check if player x-position is before / after bug x-pos, and on same y-pos.
+// Check if player x-y position is equal to enemy x-y + enemy's dimensions (height-width)
+// Reset game if bug hits player
 function checkCollisions () {
     allEnemies.forEach(function(enemy){
-
         if (
             player.x <= enemy.x + enemy.width - 20 &&
             player.x + enemy.width >= enemy.x &&
-            player.y <= enemy.y + enemy.height - 10 &&
-            player.height + player.y >= enemy.y
+            // player.y + (value) makes it easier to move below enemy
+            player.y + 20 <= enemy.y + enemy.height &&
+            // player.height - (value) makes it easier to move above enemy
+            player.y + player.height - 40 >= enemy.y
         ){
             player.reset(0);
         }
@@ -132,8 +133,8 @@ var allEnemies = [];
 // Confine enemy movement to these Y coordinates / rows
 var enemyRows = [60,140,220,300];
 
-// Create enemies
-for (var i = 0; allEnemies.length <= 3; i++) {
+// Create enemies, push to allEnemies array
+for (var i = 0; allEnemies.length <= 6; i++) {
 
     var enemyRowRandom = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
 
@@ -141,11 +142,11 @@ for (var i = 0; allEnemies.length <= 3; i++) {
     this.y = enemyRowRandom;
 
     // Set a random speed for the enemy
-    var enemySpeed = Math.random() * (240 - 60) + 60;
+    var enemySpeed = Math.random() * (240 - 70) + 70;
         enemySpeed = Math.round(enemySpeed);
 
     // Add new enemy to allEnemies array
-    allEnemies.push( new Enemy(-150, this.y, enemySpeed) );
+    allEnemies.push( new Enemy(-100, this.y, enemySpeed) );
 
 }
 
@@ -154,11 +155,7 @@ var player = new Player(200,400);
 // Player reset function
 Player.prototype.reset = function(status){
 
-    // Reset to starting coordinates
-    player.x = 200;
-    player.y = 400;
-
-    // If player reaches water, success, else, hit by bug
+    // If player reaches water, success, else, hit by bug.
     if (status === 1){
         score += scoreValue;
         document.getElementById("score").innerHTML=score;
@@ -172,8 +169,13 @@ Player.prototype.reset = function(status){
         } else {
              alert("Agh! Avoid the bugs! Your score: " + score);
         }
-        console.log("Crash: " + player.x + " - " + player.y);
+        console.log("Crash: " + "X: " + player.x + " - Y: " + player.y);
     }
+
+    // Reset to starting coordinates
+    player.x = 200;
+    player.y = 400;
+
 }
 
 // This listens for key presses and sends the keys to your

@@ -137,15 +137,9 @@ var enemyCols = [-65, -80, -100];
 // Create enemies, push to allEnemies array
 for (var i = 0; allEnemies.length <= 6; i++) {
 
-    // Randomize X/Y position
-    var enemyRowRandom = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
-    var enemyColRandom = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
-
-    // Start enemy on random enemyRows value
-    this.y = enemyRowRandom;
-    this.x = enemyColRandom;
-
-    // Start enemy on random X value
+    // Start enemy at random X/Y coordinates
+    this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
+    this.x = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
 
     // Set a random speed for the enemy
     var enemySpeed = Math.random() * (240 - 70) + 70;

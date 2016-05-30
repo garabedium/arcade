@@ -36,7 +36,7 @@ Enemy.prototype.update = function(dt) {
     // Enemy movement loop
     // If enemy is off-canvas, start over at -80
     if (this.x > 500){
-        this.x = enemyCols[Math.round(Math.random()*(enemyRows.length-1))];
+        this.x = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
         this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
         this.speed = Math.random() * (240 - 70) + 70;
     } else {
@@ -139,7 +139,7 @@ for (var i = 0; allEnemies.length <= 6; i++) {
 
     // Randomize X/Y position
     var enemyRowRandom = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
-    var enemyColRandom = enemyCols[Math.round(Math.random()*(enemyRows.length-1))];
+    var enemyColRandom = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
 
     // Start enemy on random enemyRows value
     this.y = enemyRowRandom;

@@ -189,12 +189,12 @@ Player.prototype.reset = function(status){
         } else {
              alert("Agh! Avoid the bugs! Your score: " + score);
         }
-        console.log("Crash: " + "X: " + player.x + " - Y: " + player.y);
+        console.log("Crash: " + "X: " + this.x + " - Y: " + this.y);
     }
 
     // Reset to starting coordinates
-    player.x = 200;
-    player.y = 400;
+    this.x = 200;
+    this.y = 400;
 
 };
 

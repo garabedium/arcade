@@ -1,23 +1,33 @@
+'use strict';
+
+var app = app || {};
+//var FOO = (function() {
 // Keep score
 var score = 0,
     scoreValue = 10,
     gameTitle = "<h1>a <span>bug's</span> strife</h1>",
     scoreText = "<h3>score: <span id='score'></span></h3>";
 
+    app.speedMax = 240;
+    app.speedMin = 70;
+
 window.onload = function(){
     document.getElementById("score-board").innerHTML=gameTitle + scoreText;
     document.getElementById("score").innerHTML=score;
-}
+};
 
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
+    var enemyWidth = 95;
+    var enemyHeight = 75;
+
     this.x = x;
     this.y = y;
-    this.width = 95;
-    this.height = 75;
+    this.width = enemyWidth;
+    this.height = enemyHeight;
     this.speed = speed;
 
     // The image/sprite for our enemies, this uses
@@ -33,12 +43,12 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
-    // Enemy movement loop
-    // If enemy is off-canvas, start over at -80
-    if (this.x > 500){
+    var canvasMax = 500;
+
+    if (this.x > canvasMax){
         this.x = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
         this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
-        this.speed = Math.random() * (240 - 70) + 70;
+        this.speed = Math.random() * (app.speedMax - app.speedMin) + app.speedMin;
     } else {
        this.x = this.x += (this.speed * dt);
     }
@@ -60,8 +70,11 @@ var Player = function(x,y) {
     this.y = y;
 
     // Set player width-height for collision detection
-    this.width = 65;
-    this.height = 90;
+    var playerWidth = 65;
+    var playerHeight = 90;
+
+    this.width = playerWidth;
+    this.height = playerHeight;
 
 };
 
@@ -71,16 +84,19 @@ Player.prototype.render = function(){
 
 Player.prototype.update = function(dt){
 
+    var boundaryMin = 40;
+    var boundaryMax = 400;
+
     // Set player boundaries
-    if (this.y < 40){
+    if (this.y < boundaryMin){
         player.reset(1);
-    } else if (this.y >= 400) {
-        this.y = 400;
+    } else if (this.y >= boundaryMax) {
+        this.y = boundaryMax;
     }
     if (this.x <= 0){
         this.x = 0;
-    } else if (this.x >= 400){
-        this.x = 400;
+    } else if (this.x >= boundaryMax){
+        this.x = boundaryMax;
     }
 
 };
@@ -109,14 +125,18 @@ Player.prototype.handleInput = function(key){
 // Check if player x-y position is equal to enemy x-y + enemy's dimensions (height-width)
 // Reset game if bug hits player
 function checkCollisions () {
+
+    var collideOffsetMin = 20;
+    var collideOffsetMax = 40;
+
     allEnemies.forEach(function(enemy){
         if (
-            player.x <= enemy.x + enemy.width - 20 &&
+            player.x <= enemy.x + enemy.width - collideOffsetMin &&
             player.x + enemy.width >= enemy.x &&
             // player.y + (value) makes it easier to move below enemy
-            player.y + 20 <= enemy.y + enemy.height &&
+            player.y + collideOffsetMin <= enemy.y + enemy.height &&
             // player.height - (value) makes it easier to move above enemy
-            player.y + player.height - 40 >= enemy.y
+            player.y + player.height - collideOffsetMax >= enemy.y
         ){
             player.reset(0);
         }
@@ -142,7 +162,7 @@ for (var i = 0; allEnemies.length <= 6; i++) {
     this.x = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
 
     // Set a random speed for the enemy
-    var enemySpeed = Math.random() * (240 - 70) + 70;
+    var enemySpeed = Math.random() * (app.speedMax - app.speedMin) + app.speedMin;
         enemySpeed = Math.round(enemySpeed);
 
     // Add new enemy to allEnemies array
@@ -176,7 +196,7 @@ Player.prototype.reset = function(status){
     player.x = 200;
     player.y = 400;
 
-}
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -190,3 +210,5 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+//})();

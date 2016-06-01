@@ -1,15 +1,17 @@
 'use strict';
 
-var app = app || {};
-//var FOO = (function() {
+//var someGlobal = "eat your globals for bfast";
+
+var app = (function() {
 // Keep score
 var score = 0,
     scoreValue = 10,
     gameTitle = "<h1>a <span>bug's</span> strife</h1>",
     scoreText = "<h3>score: <span id='score'></span></h3>";
+    //allEnemies = [];
 
-    app.speedMax = 240;
-    app.speedMin = 70;
+    var speedMax = 240;
+    var speedMin = 70;
 
 window.onload = function(){
     document.getElementById("score-board").innerHTML=gameTitle + scoreText;
@@ -48,7 +50,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > canvasMax){
         this.x = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
         this.y = enemyRows[Math.round(Math.random()*(enemyRows.length-1))];
-        this.speed = Math.random() * (app.speedMax - app.speedMin) + app.speedMin;
+        this.speed = Math.random() * (speedMax - speedMin) + speedMin;
     } else {
        this.x = this.x += (this.speed * dt);
     }
@@ -148,7 +150,7 @@ function checkCollisions () {
 // Place the player object in a variable called player
 
 // Enemy array
-var allEnemies = [];
+//var allEnemies = [];
 
 // Confine enemy movement to these Y coordinates / rows
 var enemyRows = [60, 140, 220, 300];
@@ -162,7 +164,7 @@ for (var i = 0; allEnemies.length <= 6; i++) {
     this.x = enemyCols[Math.round(Math.random()*(enemyCols.length-1))];
 
     // Set a random speed for the enemy
-    var enemySpeed = Math.random() * (app.speedMax - app.speedMin) + app.speedMin;
+    var enemySpeed = Math.random() * (speedMax - speedMin) + speedMin;
         enemySpeed = Math.round(enemySpeed);
 
     // Add new enemy to allEnemies array
@@ -211,4 +213,4 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-//})();
+})(); // end:scoping function

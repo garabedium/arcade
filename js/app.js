@@ -89,7 +89,7 @@ Player.prototype.update = function(dt){
 
     // Set player boundaries
     if (this.y < boundaryMin){
-        player.reset(1);
+        this.reset(1);
     } else if (this.y >= boundaryMax) {
         this.y = boundaryMax;
     }

@@ -3,6 +3,7 @@
 //var someGlobal = "eat your globals for bfast";
 
 var app = (function() {
+
 // Keep score
 var score = 0,
     scoreValue = 10,
@@ -150,7 +151,7 @@ function checkCollisions () {
 // Place the player object in a variable called player
 
 // Enemy array
-//var allEnemies = [];
+var allEnemies = [];
 
 // Confine enemy movement to these Y coordinates / rows
 var enemyRows = [60, 140, 220, 300];

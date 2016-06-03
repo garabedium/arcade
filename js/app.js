@@ -1,19 +1,16 @@
+
 'use strict';
 
-//var someGlobal = "eat your globals for bfast";
-
-var app = (function() {
-
-// Keep score
+// Declare game variables
 var score = 0,
     scoreValue = 10,
     gameTitle = "<h1>a <span>bug's</span> strife</h1>",
     scoreText = "<h3>score: <span id='score'></span></h3>";
-    //allEnemies = [];
 
     var speedMax = 240;
     var speedMin = 70;
 
+// Show scoreboard
 window.onload = function(){
     document.getElementById("score-board").innerHTML=gameTitle + scoreText;
     document.getElementById("score").innerHTML=score;
@@ -169,7 +166,7 @@ for (var i = 0; allEnemies.length <= 6; i++) {
         enemySpeed = Math.round(enemySpeed);
 
     // Add new enemy to allEnemies array
-    allEnemies.push( new Enemy(-100, this.y, enemySpeed) );
+    allEnemies.push( new Enemy(this.x, this.y, enemySpeed) );
 
 }
 
@@ -213,5 +210,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-})(); // end:scoping function

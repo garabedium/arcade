@@ -10,7 +10,7 @@ Download the repo to your desktop and open the index.html file in your browser. 
 - Gain points every time you reach the water.
 - Lose points every time you hit a bug.
 
-### credits
+### Credits
 - [Variable For Loops](http://stackoverflow.com/questions/6645067/javascript-dynamically-creating-variables-for-loops)
 - [Call-Bind Methods](http://javascriptissexy.com/javascript-apply-call-and-bind-methods-are-essential-for-javascript-professionals/)
 - [Generating Random Numbers](http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range)

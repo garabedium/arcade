@@ -5,10 +5,12 @@
 var score = 0,
     scoreValue = 10,
     gameTitle = "<h1>a <span>bug's</span> strife</h1>",
-    scoreText = "<h3>score: <span id='score'></span></h3>";
+    scoreText = "<h3>score: <span id='score'></span></h3>",
+    speedMax = 240,
+    speedMin = 70;
 
-    var speedMax = 240;
-    var speedMin = 70;
+    // var speedMax = 240;
+    // var speedMin = 70;
 
 // Show scoreboard
 window.onload = function(){
